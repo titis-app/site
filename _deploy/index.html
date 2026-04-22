@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>titis — baby log tracker para familias</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="icon" href="assets/titis-icon.png" />
+    <style>
+      :root { color-scheme: light; }
+      html, body { margin: 0; padding: 0; background: #fff6ea; }
+      html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+      body {
+        font-family: Inter, system-ui, sans-serif;
+        color: #3a2e22;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        overflow-x: hidden;
+      }
+      .logo { font-family: 'Bagel Fat One', system-ui, sans-serif; font-weight: 400; }
+      a { color: inherit; }
+      * { box-sizing: border-box; }
+      ::selection { background: #f2805c; color: #fff6ea; }
+      img { max-width: 100%; }
+
+      /* ─── Responsive helpers ─────────────────────────────────────────
+         Applied through classNames on JSX nodes. At ≤760px we flip
+         every 2/3-col grid to 1 col, trim horizontal padding, and
+         scale display type with clamp(). */
+      .rs-section { padding-left: clamp(20px, 5vw, 48px); padding-right: clamp(20px, 5vw, 48px); }
+      .rs-section-tight { padding-left: clamp(16px, 4vw, 48px); padding-right: clamp(16px, 4vw, 48px); }
+
+      /* Fluid display type */
+      .rs-h1 { font-size: clamp(40px, 9vw, 76px) !important; letter-spacing: -0.04em !important; }
+      .rs-h2 { font-size: clamp(30px, 6.2vw, 48px) !important; letter-spacing: -0.03em !important; }
+      .rs-h2-sm { font-size: clamp(28px, 5.6vw, 46px) !important; letter-spacing: -0.03em !important; }
+      .rs-h2-lg { font-size: clamp(34px, 8vw, 60px) !important; letter-spacing: -0.035em !important; }
+      .rs-lede { font-size: clamp(15px, 2.4vw, 19px) !important; }
+
+      /* Grids → single column on mobile */
+      @media (max-width: 760px) {
+        .rs-grid-2 { grid-template-columns: 1fr !important; gap: 28px !important; }
+        .rs-grid-3 { grid-template-columns: 1fr !important; gap: 14px !important; }
+        .rs-grid-2-even { grid-template-columns: 1fr !important; gap: 14px !important; }
+        .rs-grid-3-smart { grid-template-columns: 1fr !important; gap: 14px !important; }
+        .rs-footer-links { grid-template-columns: repeat(2, 1fr) !important; gap: 28px !important; }
+        .rs-sounds-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        .rs-hero-ph { height: auto !important; min-height: 420px; }
+        .rs-card-pad { padding: clamp(32px, 6vw, 80px) clamp(20px, 5vw, 48px) !important; border-radius: 24px !important; }
+        .rs-section-padY { padding-top: 48px !important; padding-bottom: 48px !important; }
+        .rs-gallery { grid-auto-rows: 100px !important; }
+        .rs-cta-pad { padding: 56px 24px !important; border-radius: 24px !important; }
+      }
+
+      /* Hide desktop nav links; show hamburger instead */
+      .rs-nav-links { display: flex; }
+      .rs-nav-menu-btn { display: none; }
+      @media (max-width: 760px) {
+        .rs-nav-links { display: none !important; }
+        .rs-nav-menu-btn { display: inline-flex !important; }
+        .rs-nav-cta { display: none !important; }
+        .rs-nav-lang { display: none !important; }
+        .rs-nav-padX { padding-left: 20px !important; padding-right: 20px !important; padding-top: 14px !important; padding-bottom: 14px !important; }
+      }
+
+      /* Hero phone layout on mobile — stack instead of absolute overlap */
+      @media (max-width: 760px) {
+        .rs-hero-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+        .rs-hero-phones { position: static !important; display: flex !important; justify-content: center !important; gap: 0 !important; flex-wrap: nowrap !important; height: 360px !important; min-height: 0 !important; align-items: center !important; overflow: hidden; }
+        .rs-hero-phones > div { position: static !important; transform-origin: center center; }
+        .rs-hero-phone-a { transform: scale(0.55) rotate(-6deg); margin-right: -90px; }
+        .rs-hero-phone-b { transform: scale(0.55) rotate(5deg); margin-left: -90px; }
+        .rs-hero-section { padding-top: 28px !important; padding-bottom: 0 !important; }
+      }
+      @media (max-width: 400px) {
+        .rs-hero-phones { height: 320px !important; }
+        .rs-hero-phone-a { transform: scale(0.46) rotate(-6deg); margin-right: -110px; }
+        .rs-hero-phone-b { transform: scale(0.46) rotate(5deg); margin-left: -110px; }
+      }
+
+      /* Lede text wrapping on narrow widths */
+      @media (max-width: 760px) {
+        .rs-lede { max-width: 100% !important; margin-top: 18px !important; margin-bottom: 22px !important; }
+      }
+
+      /* Family diagram — keep proportions when column becomes full width */
+      @media (max-width: 760px) {
+        .rs-family-diagram { height: 360px !important; max-width: 420px; margin-inline: auto; }
+        .rs-family-role { font-size: 9.5px !important; }
+      }
+
+      /* Typography bumps for mobile legibility */
+      @media (max-width: 760px) {
+        .rs-smallcaps { font-size: 11.5px !important; letter-spacing: 0.8px !important; }
+        .rs-card-title { font-size: 22px !important; }
+        .rs-section-padY { padding-top: 40px !important; padding-bottom: 40px !important; }
+      }
+    </style>
+    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+    <script type="text/babel" src="landing/components.jsx"></script>
+    <script type="text/babel" src="landing/i18n.jsx"></script>
+    <script type="text/babel" src="landing/phones.jsx"></script>
+    <script type="text/babel" src="landing/sections-a.jsx"></script>
+    <script type="text/babel" src="landing/sections-b.jsx"></script>
+    <script>
+      // Tweaks defaults — host can rewrite this JSON on disk via __edit_mode_set_keys.
+      window.TITIS_TWEAKS = /*EDITMODE-BEGIN*/{
+        "showAppIcon": false,
+        "navLogoSize": 32,
+        "footerLogoSize": 40
+      }/*EDITMODE-END*/;
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="tweaks-root"></div>
+    <script type="text/babel">
+      function App() {
+        return (
+          <LangProvider>
+            <Nav/>
+            <Hero/>
+            <RecordTypes/>
+            <FamilySection/>
+            <SmartFeatures/>
+            <WhiteNoise/>
+            <FAQ/>
+            <FinalCTA/>
+            <Footer/>
+          </LangProvider>
+        );
+      }
+      const appRoot = ReactDOM.createRoot(document.getElementById('root'));
+      appRoot.render(<App/>);
+
+      // ── Tweaks panel ────────────────────────────────────────────────
+      function TweaksPanel({ tweaks, onChange }) {
+        const row = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, padding: '10px 0' };
+        return (
+          <div style={{
+            position: 'fixed', right: 20, bottom: 20, zIndex: 9999,
+            width: 280, background: '#fff6ea', color: '#3a2e22',
+            border: '1.5px solid rgba(58,46,34,0.18)', borderRadius: 16,
+            boxShadow: '0 12px 40px rgba(58,46,34,0.18)',
+            fontFamily: 'Inter, system-ui, sans-serif', fontSize: 13,
+            padding: '14px 16px 12px',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+              <div style={{ fontWeight: 700, letterSpacing: 0.3, fontSize: 12, textTransform: 'uppercase' }}>Tweaks</div>
+            </div>
+            <div style={row}>
+              <label htmlFor="tw-appicon" style={{ lineHeight: 1.3 }}>
+                Mostrar icono de la app<br/>
+                <span style={{ opacity: 0.6, fontSize: 11 }}>en nav y footer</span>
+              </label>
+              <input
+                id="tw-appicon"
+                type="checkbox"
+                checked={!!tweaks.showAppIcon}
+                onChange={e => onChange({ showAppIcon: e.target.checked })}
+                style={{ width: 18, height: 18, accentColor: '#f2805c', cursor: 'pointer' }}
+              />
+            </div>
+            <div style={{ padding: '10px 0', borderTop: '1px solid rgba(58,46,34,0.1)' }}>
+              <label htmlFor="tw-nav-size" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                <span>Logo del nav</span>
+                <span style={{ opacity: 0.6 }}>{tweaks.navLogoSize}px</span>
+              </label>
+              <input
+                id="tw-nav-size" type="range" min={18} max={64} step={1}
+                value={tweaks.navLogoSize}
+                onChange={e => onChange({ navLogoSize: Number(e.target.value) })}
+                style={{ width: '100%', accentColor: '#f2805c' }}
+              />
+            </div>
+            <div style={{ padding: '10px 0', borderTop: '1px solid rgba(58,46,34,0.1)' }}>
+              <label htmlFor="tw-footer-size" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                <span>Logo del footer</span>
+                <span style={{ opacity: 0.6 }}>{tweaks.footerLogoSize}px</span>
+              </label>
+              <input
+                id="tw-footer-size" type="range" min={20} max={80} step={1}
+                value={tweaks.footerLogoSize}
+                onChange={e => onChange({ footerLogoSize: Number(e.target.value) })}
+                style={{ width: '100%', accentColor: '#f2805c' }}
+              />
+            </div>
+          </div>
+        );
+      }
+
+      const tweaksRoot = ReactDOM.createRoot(document.getElementById('tweaks-root'));
+      let tweaksActive = false;
+
+      function renderTweaks() {
+        if (!tweaksActive) { tweaksRoot.render(null); return; }
+        tweaksRoot.render(
+          <TweaksPanel
+            tweaks={window.TITIS_TWEAKS}
+            onChange={(edits) => {
+              window.TITIS_TWEAKS = { ...window.TITIS_TWEAKS, ...edits };
+              window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+              appRoot.render(<App/>);
+              renderTweaks();
+            }}
+          />
+        );
+      }
+
+      window.addEventListener('message', (ev) => {
+        const d = ev.data;
+        if (!d || typeof d !== 'object') return;
+        if (d.type === '__activate_edit_mode') { tweaksActive = true; renderTweaks(); }
+        if (d.type === '__deactivate_edit_mode') { tweaksActive = false; renderTweaks(); }
+      });
+      // Announce after the listener is wired up.
+      window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    </script>
+  </body>
+</html>

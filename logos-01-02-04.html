@@ -1,0 +1,581 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>titis — 01 / 02 / 04 variations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      html, body { margin: 0; padding: 0; }
+      body { font-family: Inter, system-ui, sans-serif; }
+      .logo { font-family: 'Bagel Fat One', system-ui, sans-serif; font-weight: 400; }
+    </style>
+    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+    <script type="text/babel" src="design-canvas.jsx"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const S = 240;
+      const R = 54;
+
+      function Icon({ bg, children, style = {}, border }) {
+        return (
+          <div style={{
+            width: S, height: S,
+            borderRadius: R,
+            background: bg,
+            border: border || 'none',
+            position: 'relative',
+            overflow: 'hidden',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: 'inset 0 -6px 0 rgba(0,0,0,0.04), 0 10px 30px rgba(40,20,10,0.08)',
+            ...style,
+          }}>
+            {children}
+          </div>
+        );
+      }
+
+      function Caption({ label, note }) {
+        return (
+          <div style={{ marginTop: 18, fontSize: 13, color: '#3a2e22', maxWidth: S }}>
+            <div style={{ fontWeight: 600, marginBottom: 2 }}>{label}</div>
+            <div style={{ color: 'rgba(60,50,40,0.65)', lineHeight: 1.45 }}>{note}</div>
+          </div>
+        );
+      }
+
+      // Reusable two-line "tit / is" wordmark.
+      // Props let us tweak color, alignment, font size, transforms, per-letter overrides.
+      function Stack({
+        fg = '#f2805c',
+        perLetter,           // optional array of 5 colors
+        align = 'center',
+        fontSize = 150,
+        letterSpacing = -3,
+        lineHeight = 0.88,
+        style = {},
+        line1Style = {},
+        line2Style = {},
+      }) {
+        const letters = ['t', 'i', 't', 'i', 's'];
+        const colorFor = (i) => (perLetter ? perLetter[i] : fg);
+        const lineStyle = {
+          display: 'flex',
+          justifyContent: align,
+          lineHeight,
+          letterSpacing,
+        };
+        return (
+          <div className="logo" style={{
+            fontSize,
+            display: 'flex', flexDirection: 'column',
+            width: '100%',
+            padding: '0 22px',
+            boxSizing: 'border-box',
+            ...style,
+          }}>
+            <div style={{ ...lineStyle, ...line1Style }}>
+              <span style={{ color: colorFor(0) }}>{letters[0]}</span>
+              <span style={{ color: colorFor(1) }}>{letters[1]}</span>
+              <span style={{ color: colorFor(2) }}>{letters[2]}</span>
+            </div>
+            <div style={{ ...lineStyle, ...line2Style }}>
+              <span style={{ color: colorFor(3) }}>{letters[3]}</span>
+              <span style={{ color: colorFor(4) }}>{letters[4]}</span>
+            </div>
+          </div>
+        );
+      }
+
+      // ═══════════════════════════════════════════════════════════════
+      // 01 — Cream bg + peach type. Three creative variations.
+      // ═══════════════════════════════════════════════════════════════
+
+      // 01a — Dots as milk drops. Native i-dots replaced with oversized
+      // droplets that sit between lines; a tiny one under the 's' too.
+      function V01a() {
+        return (
+          <Icon bg="#fff1e0">
+            <svg viewBox="0 0 240 240" width="240" height="240" style={{ position: 'absolute', inset: 0, overflow: 'visible' }}>
+              {/* droplet cluster in the negative space near the i's */}
+              <ellipse cx="80" cy="122" rx="7" ry="9" fill="#f2805c" opacity="0.25" />
+              <ellipse cx="155" cy="118" rx="5" ry="7" fill="#f2805c" opacity="0.2" />
+              <ellipse cx="120" cy="215" rx="6" ry="8" fill="#f2805c" opacity="0.3" />
+            </svg>
+            <Stack fg="#f2805c" />
+          </Icon>
+        );
+      }
+
+      // 01b — Soft peach halo behind the type. Gentle radial glow gives the
+      // icon a warm, lamp-lit / nursery-at-night feel.
+      function V01b() {
+        return (
+          <Icon bg="#fff1e0" style={{
+            background: 'radial-gradient(circle at 50% 55%, #ffe0c8 0%, #fff1e0 65%)',
+          }}>
+            <Stack fg="#f2805c" />
+          </Icon>
+        );
+      }
+
+      // 01c — Hand-drawn underline beneath "is", like a logbook entry.
+      function V01c() {
+        return (
+          <Icon bg="#fff1e0">
+            <Stack fg="#f2805c" />
+            <svg viewBox="0 0 240 240" width="240" height="240" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+              <path d="M 96 196 Q 120 202 148 195"
+                stroke="#f2805c" strokeWidth="5" strokeLinecap="round" fill="none" opacity="0.7"/>
+            </svg>
+          </Icon>
+        );
+      }
+
+      // ═══════════════════════════════════════════════════════════════
+      // 02 — Peach bg + cream type. Three creative variations.
+      // ═══════════════════════════════════════════════════════════════
+
+      // 02a — Gradient peach-to-blush bg. Keeps cream type; more depth.
+      function V02a() {
+        return (
+          <Icon bg="linear-gradient(160deg, #ffb89a 0%, #f7a886 55%, #e88a88 100%)">
+            <Stack fg="#fff6ea" />
+          </Icon>
+        );
+      }
+
+      // 02b — Cloud cutout: a soft white cloud shape sits behind the type,
+      // then type becomes peach inside the cloud and cream outside.
+      // Evokes nap-time / dreamy.
+      function V02b() {
+        return (
+          <Icon bg="#f7a886">
+            {/* cloud */}
+            <svg viewBox="0 0 240 240" width="240" height="240" style={{ position: 'absolute', inset: 0 }}>
+              <defs>
+                <clipPath id="cloud">
+                  <path d="M 50 120
+                           a 38 38 0 0 1 30 -38
+                           a 40 40 0 0 1 75 -8
+                           a 34 34 0 0 1 45 38
+                           a 32 32 0 0 1 -30 42
+                           l -100 0
+                           a 32 32 0 0 1 -20 -34 Z" />
+                </clipPath>
+              </defs>
+              <path d="M 50 120
+                       a 38 38 0 0 1 30 -38
+                       a 40 40 0 0 1 75 -8
+                       a 34 34 0 0 1 45 38
+                       a 32 32 0 0 1 -30 42
+                       l -100 0
+                       a 32 32 0 0 1 -20 -34 Z"
+                fill="#fff6ea" />
+            </svg>
+            {/* type layer — cream everywhere, peach where inside the cloud */}
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Stack fg="#fff6ea" />
+            </div>
+            <div style={{
+              position: 'absolute', inset: 0,
+              clipPath: 'path("M 50 120 a 38 38 0 0 1 30 -38 a 40 40 0 0 1 75 -8 a 34 34 0 0 1 45 38 a 32 32 0 0 1 -30 42 l -100 0 a 32 32 0 0 1 -20 -34 Z")',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Stack fg="#f2805c" />
+            </div>
+          </Icon>
+        );
+      }
+
+      // 02c — Big friendly "sleeping eyes" mark above the wordmark.
+      // Two closed eye curves — instantly reads as "baby sleeping".
+      function V02c() {
+        return (
+          <Icon bg="#f7a886">
+            <Stack fg="#fff6ea" fontSize={120} style={{ transform: 'translateY(24px)' }} />
+            <svg viewBox="0 0 240 240" width="240" height="240" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+              {/* closed eyes */}
+              <path d="M 75 68 q 14 -14 28 0" stroke="#fff6ea" strokeWidth="7" strokeLinecap="round" fill="none"/>
+              <path d="M 137 68 q 14 -14 28 0" stroke="#fff6ea" strokeWidth="7" strokeLinecap="round" fill="none"/>
+              {/* tiny blush cheeks */}
+              <circle cx="72" cy="90" r="6" fill="#ffd0c0" opacity="0.7"/>
+              <circle cx="168" cy="90" r="6" fill="#ffd0c0" opacity="0.7"/>
+            </svg>
+          </Icon>
+        );
+      }
+
+      // 02d — Playful tilt on peach. Same tumbling-blocks treatment as 06d
+      // but in the 02 palette: cream letters on peach bg, alternating tilts.
+      function V02d() {
+        const letters = ['t','i','t','i','s'];
+        const tilts = [-8, 6, -5, 7, -6];
+        const yBobs = [0, -4, 2, -3, 1];
+        const Letter = ({ i }) => (
+          <span style={{
+            display: 'inline-block',
+            color: '#fff6ea',
+            transform: `rotate(${tilts[i]}deg) translateY(${yBobs[i]}px)`,
+            transformOrigin: '50% 70%',
+          }}>{letters[i]}</span>
+        );
+        return (
+          <Icon bg="#f7a886">
+            <div className="logo" style={{
+              fontSize: 108, display: 'flex', flexDirection: 'column',
+              width: '100%', padding: '0 22px', boxSizing: 'border-box',
+              lineHeight: 0.82, letterSpacing: -3,
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+                <Letter i={0}/><Letter i={1}/><Letter i={2}/>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: -4 }}>
+                <Letter i={3}/><Letter i={4}/>
+              </div>
+            </div>
+          </Icon>
+        );
+      }
+
+      // ═══════════════════════════════════════════════════════════════
+      // 06 — Pastel rainbow (two-line tit / is). Three creative variations.
+      // Base palette: coral / yellow / green / blue / lilac — one per letter.
+      // Each variation explores a different "twist" on that foundation.
+      // ═══════════════════════════════════════════════════════════════
+      const RAINBOW = ['#f2805c', '#f5c24a', '#7fbf7a', '#5aa0e6', '#b98be0'];
+
+      // 06a — Confetti / party. Tiny floating shapes in the rainbow colors
+      // scattered around the wordmark — nods to celebrating every small
+      // milestone a parent logs (first smile, first solid, etc.).
+      function V06a() {
+        const bits = [
+          { x: 34, y: 46, r: 8, c: '#f2805c', s: 'circle' },
+          { x: 206, y: 58, r: 7, c: '#f5c24a', s: 'square', rot: 18 },
+          { x: 28, y: 170, r: 7, c: '#7fbf7a', s: 'tri' },
+          { x: 210, y: 180, r: 9, c: '#5aa0e6', s: 'circle' },
+          { x: 118, y: 26, r: 6, c: '#b98be0', s: 'square', rot: -14 },
+          { x: 48, y: 118, r: 5, c: '#f5c24a', s: 'circle' },
+          { x: 198, y: 122, r: 5, c: '#b98be0', s: 'circle' },
+          { x: 120, y: 222, r: 6, c: '#7fbf7a', s: 'tri' },
+        ];
+        return (
+          <Icon bg="#fff6ea">
+            <svg viewBox="0 0 240 240" width="240" height="240" style={{ position: 'absolute', inset: 0 }}>
+              {bits.map((b, i) => {
+                if (b.s === 'circle') return <circle key={i} cx={b.x} cy={b.y} r={b.r} fill={b.c}/>;
+                if (b.s === 'square') return <rect key={i} x={b.x - b.r} y={b.y - b.r} width={b.r*2} height={b.r*2} fill={b.c} transform={`rotate(${b.rot} ${b.x} ${b.y})`}/>;
+                return <polygon key={i} points={`${b.x},${b.y - b.r} ${b.x + b.r},${b.y + b.r} ${b.x - b.r},${b.y + b.r}`} fill={b.c}/>;
+              })}
+            </svg>
+            <div style={{ position: 'relative' }}>
+              <Stack perLetter={RAINBOW} />
+            </div>
+          </Icon>
+        );
+      }
+
+      // 06b — Offset chromatic shadow. Each letter drops a soft-colored
+      // shadow of its own hue, down-right. Gives the rainbow a risograph /
+      // print-zine feel — very "indie children's book".
+      function V06b() {
+        const letters = ['t','i','t','i','s'];
+        const Line = ({ idxs }) => (
+          <div style={{ display: 'flex', justifyContent: 'center', lineHeight: 0.88, letterSpacing: -3 }}>
+            {idxs.map((i) => (
+              <span key={i} style={{ position: 'relative', display: 'inline-block' }}>
+                <span style={{
+                  position: 'absolute', inset: 0,
+                  color: RAINBOW[i], opacity: 0.35,
+                  transform: 'translate(6px, 6px)',
+                }}>{letters[i]}</span>
+                <span style={{ position: 'relative', color: '#2a2320' }}>{letters[i]}</span>
+              </span>
+            ))}
+          </div>
+        );
+        return (
+          <Icon bg="#fff6ea">
+            <div className="logo" style={{
+              fontSize: 150, display: 'flex', flexDirection: 'column',
+              width: '100%', padding: '0 22px', boxSizing: 'border-box',
+            }}>
+              <Line idxs={[0,1,2]} />
+              <Line idxs={[3,4]} />
+            </div>
+          </Icon>
+        );
+      }
+
+      // 06c — Sliced / layered bands. Each letter sits on its own pastel
+      // band — horizontal stripes across the icon, each tinted to its
+      // letter's color. Looks like a stacked color-swatch / palette chip.
+      // The word is cream on top of the colored field; gives it a totally
+      // different personality from the others.
+      function V06c() {
+        // 5 horizontal bands. We split tit on bands 1-3 and is on bands 4-5,
+        // but visually the bands are continuous across the whole icon.
+        const bands = RAINBOW.map((c, i) => ({ c, top: (i * 240) / 5, h: 240 / 5 }));
+        return (
+          <Icon bg="#fff6ea">
+            {bands.map((b, i) => (
+              <div key={i} style={{
+                position: 'absolute', left: 0, right: 0,
+                top: b.top, height: b.h,
+                background: b.c, opacity: 0.9,
+              }}/>
+            ))}
+            <div style={{ position: 'relative' }}>
+              <Stack fg="#fff6ea" />
+            </div>
+          </Icon>
+        );
+      }
+
+      // 06d — Playful tilt. Each letter rotated at a small alternating angle
+      // so the word "bounces" across two lines — like baby blocks tumbling
+      // or a hand-lettered nursery sign. Subtle enough to stay legible.
+      function V06d() {
+        const letters = ['t','i','t','i','s'];
+        const tilts = [-8, 6, -5, 7, -6]; // per-letter rotation in deg
+        const yBobs = [0, -4, 2, -3, 1];   // tiny vertical bobs
+        const Letter = ({ i }) => (
+          <span style={{
+            display: 'inline-block',
+            color: RAINBOW[i],
+            transform: `rotate(${tilts[i]}deg) translateY(${yBobs[i]}px)`,
+            transformOrigin: '50% 70%',
+          }}>{letters[i]}</span>
+        );
+        return (
+          <Icon bg="#fff6ea">
+            <div className="logo" style={{
+              fontSize: 108, display: 'flex', flexDirection: 'column',
+              width: '100%', padding: '0 22px', boxSizing: 'border-box',
+              lineHeight: 0.82, letterSpacing: -3,
+              transform: 'translateX(3px)',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+                <Letter i={0}/><Letter i={1}/><Letter i={2}/>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: -4 }}>
+                <Letter i={3}/><Letter i={4}/>
+              </div>
+            </div>
+          </Icon>
+        );
+      }
+
+      // ───────────────────────────────────────────────────────────────
+      // Home-screen preview
+      // ───────────────────────────────────────────────────────────────
+      function Mini({ children, bg }) {
+        const size = 64;
+        return (
+          <div style={{
+            width: size, height: size, borderRadius: 15,
+            background: bg,
+            boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            overflow: 'hidden', position: 'relative',
+          }}>
+            {children}
+          </div>
+        );
+      }
+      function MiniStack({ fg = '#f2805c', fontSize = 38 }) {
+        return (
+          <div className="logo" style={{
+            fontSize, letterSpacing: -1, lineHeight: 0.82,
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            color: fg,
+          }}>
+            <div>tit</div>
+            <div>is</div>
+          </div>
+        );
+      }
+
+      function HomeScreenPreview() {
+        const tiles = [
+          { label: '01a', bg: '#fff1e0', render: () => <MiniStack fg="#f2805c" /> },
+          { label: '01b', bg: 'radial-gradient(circle at 50% 55%, #ffe0c8 0%, #fff1e0 65%)',
+            render: () => <MiniStack fg="#f2805c" /> },
+          { label: '01c', bg: '#fff1e0', render: () => (
+            <>
+              <MiniStack fg="#f2805c" />
+              <svg viewBox="0 0 64 64" width="64" height="64" style={{ position: 'absolute', inset: 0 }}>
+                <path d="M 25 53 Q 32 56 40 52" stroke="#f2805c" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.7"/>
+              </svg>
+            </>
+          )},
+          { label: '02a', bg: 'linear-gradient(160deg, #ffb89a 0%, #f7a886 55%, #e88a88 100%)',
+            render: () => <MiniStack fg="#fff6ea" /> },
+          { label: '02b', bg: '#f7a886', render: () => (
+            <>
+              <svg viewBox="0 0 64 64" width="64" height="64" style={{ position: 'absolute', inset: 0 }}>
+                <ellipse cx="32" cy="30" rx="23" ry="16" fill="#fff6ea"/>
+              </svg>
+              <div style={{ position: 'relative' }}>
+                <MiniStack fg="#f2805c" fontSize={32} />
+              </div>
+            </>
+          )},
+          { label: '02c', bg: '#f7a886', render: () => (
+            <div style={{ position: 'relative' }}>
+              <MiniStack fg="#fff6ea" fontSize={32} />
+              <svg viewBox="0 0 64 64" width="64" height="64" style={{ position: 'absolute', inset: '-16px 0 0 0' }}>
+                <path d="M 20 20 q 4 -4 8 0" stroke="#fff6ea" strokeWidth="2" strokeLinecap="round" fill="none"/>
+                <path d="M 36 20 q 4 -4 8 0" stroke="#fff6ea" strokeWidth="2" strokeLinecap="round" fill="none"/>
+              </svg>
+            </div>
+          )},
+          { label: '06a', bg: '#fff6ea', render: () => (
+            <>
+              <svg viewBox="0 0 64 64" width="64" height="64" style={{ position: 'absolute', inset: 0 }}>
+                <circle cx="10" cy="14" r="2" fill="#f2805c"/>
+                <rect x="52" y="16" width="3" height="3" fill="#f5c24a" transform="rotate(18 53 17)"/>
+                <circle cx="54" cy="48" r="2" fill="#5aa0e6"/>
+                <polygon points="10,44 13,50 7,50" fill="#7fbf7a"/>
+              </svg>
+              <div className="logo" style={{ position: 'relative', fontSize: 38, lineHeight: 0.82, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ display: 'flex' }}><span style={{color:'#f2805c'}}>t</span><span style={{color:'#f5c24a'}}>i</span><span style={{color:'#7fbf7a'}}>t</span></div>
+                <div style={{ display: 'flex' }}><span style={{color:'#5aa0e6'}}>i</span><span style={{color:'#b98be0'}}>s</span></div>
+              </div>
+            </>
+          )},
+          { label: '06b', bg: '#fff6ea', render: () => (
+            <div className="logo" style={{ fontSize: 38, lineHeight: 0.82, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              {[['t','i','t'],['i','s']].map((row, r) => (
+                <div key={r} style={{ display: 'flex' }}>
+                  {row.map((l, i) => {
+                    const idx = r === 0 ? i : 3 + i;
+                    return (
+                      <span key={i} style={{ position: 'relative', display: 'inline-block' }}>
+                        <span style={{ position: 'absolute', inset: 0, color: ['#f2805c','#f5c24a','#7fbf7a','#5aa0e6','#b98be0'][idx], opacity: 0.35, transform: 'translate(1.5px, 1.5px)' }}>{l}</span>
+                        <span style={{ position: 'relative', color: '#2a2320' }}>{l}</span>
+                      </span>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          )},
+          { label: '06c', bg: '#fff6ea', render: () => (
+            <>
+              {['#f2805c','#f5c24a','#7fbf7a','#5aa0e6','#b98be0'].map((c, i) => (
+                <div key={i} style={{ position: 'absolute', left: 0, right: 0, top: i * (64/5), height: 64/5, background: c, opacity: 0.9 }}/>
+              ))}
+              <div style={{ position: 'relative' }}>
+                <MiniStack fg="#fff6ea" />
+              </div>
+            </>
+          )},
+        ];
+        return (
+          <div style={{
+            background: 'linear-gradient(180deg, #8fb8d6 0%, #c9b3d6 100%)',
+            padding: '40px 32px',
+            borderRadius: 28,
+            width: 600,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(5, 1fr)',
+            gap: 28,
+          }}>
+            {tiles.map((t, i) => (
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                <Mini bg={t.bg}>{t.render()}</Mini>
+                <div style={{ fontSize: 11, color: '#fff', textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>{t.label}</div>
+              </div>
+            ))}
+          </div>
+        );
+      }
+
+      // ═══════════════════════════════════════════════════════════════
+      // App
+      // ═══════════════════════════════════════════════════════════════
+      function App() {
+        return (
+          <DesignCanvas>
+            <DCSection
+              title="titis — 01 / 02 / 06 creative variations"
+              subtitle="Each of the three base directions, reimagined with a creative twist. All use the two-line tit / is stack.">
+              <div/>
+            </DCSection>
+
+            <DCSection title="01 — Cream background, peach type" subtitle="Warm, quiet, baby-skin palette. The safe one — pushed in 3 different directions.">
+              <DCArtboard label="01a — Milk drops" width={S} height={S} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <V01a />
+                <Caption label="Subtle droplets" note="Tiny peach droplets in negative space. Reads as milk / feed tracking without being literal." />
+              </DCArtboard>
+              <DCArtboard label="01b — Warm halo" width={S} height={S} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <V01b />
+                <Caption label="Lamp-lit" note="Radial glow behind the type — feels like a warm nursery lamp at night. Great for low-light contexts." />
+              </DCArtboard>
+              <DCArtboard label="01c — Hand-drawn underline" width={S} height={S} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <V01c />
+                <Caption label="Logbook touch" note="A single peach flourish under 'is' — nods to handwritten journaling without looking gimmicky." />
+              </DCArtboard>
+            </DCSection>
+
+            <DCSection title="02 — Peach background, cream type" subtitle="Higher saturation, inverted. Pushed toward softness, dreaminess, and character.">
+              <DCArtboard label="02a — Sunset gradient" width={S} height={S} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <V02a />
+                <Caption label="Peach → blush gradient" note="Subtle diagonal gradient adds depth. Still reads as 'one color' at thumbnail size." />
+              </DCArtboard>
+              <DCArtboard label="02b — Cloud cutout" width={S} height={S} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <V02b />
+                <Caption label="Dreamy / nap-time" note="A cream cloud sits behind the word; the type tints peach where it overlaps. Two colors at once." />
+              </DCArtboard>
+              <DCArtboard label="02c — Sleeping eyes" width={S} height={S} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <V02c />
+                <Caption label="Character / face" note="Closed-eye curves above the wordmark with tiny blush cheeks. The icon becomes a little sleeping face." />
+              </DCArtboard>
+              <DCArtboard label="02d — Playful tilt" width={S} height={S} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <V02d />
+                <Caption label="Tumbling blocks (peach)" note="Misma técnica de 06d pero en la paleta 02: crema sobre durazno. Letras inclinadas + bobs verticales — cálido y con carácter." />
+              </DCArtboard>
+            </DCSection>
+
+            <DCSection title="06 — Pastel rainbow" subtitle="Each letter its own hue. Three creative takes on the same palette.">
+              <DCArtboard label="06a — Confetti" width={S} height={S} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <V06a />
+                <Caption label="Milestones" note="Tiny scattered shapes in matching hues — celebrates the small firsts every parent logs." />
+              </DCArtboard>
+              <DCArtboard label="06b — Riso shadow" width={S} height={S} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <V06b />
+                <Caption label="Indie children's book" note="Charcoal letterforms with off-registered pastel shadows. Feels like a risograph print or zine." />
+              </DCArtboard>
+              <DCArtboard label="06c — Color bands" width={S} height={S} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <V06c />
+                <Caption label="Swatch chip" note="Five horizontal pastel bands; cream wordmark on top. Evokes a paint-chip palette — totally different personality." />
+              </DCArtboard>
+              <DCArtboard label="06d — Playful tilt" width={S} height={S} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <V06d />
+                <Caption label="Tumbling blocks" note="Cada letra con una inclinación alterna y pequeños bobs verticales. Se siente como bloques de bebé rebotando — hand-lettered sin perder legibilidad." />
+              </DCArtboard>
+            </DCSection>
+
+            <DCSection title="Home-screen check" subtitle="All 9 at 64px. Which survive the shrink?">
+              <DCArtboard label="Preview" width={600} height={420} style={{ background: 'transparent', boxShadow: 'none', padding: 0 }}>
+                <HomeScreenPreview />
+              </DCArtboard>
+              <DCPostIt top={40} left={640} rotate={3} width={240}>
+                Mis favoritas a 64px: <b>01b halo</b>, <b>02a sunset</b>, <b>06b riso shadow</b>. 06c bandas se ve increíble grande pero pierde fuerza pequeño.
+              </DCPostIt>
+            </DCSection>
+          </DesignCanvas>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+  </body>
+</html>

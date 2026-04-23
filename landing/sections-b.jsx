@@ -7,16 +7,16 @@ function SmartFeatures() {
   const S = TITIS_DICT.smart;
   return (
     <section id="funciones" className="rs-section rs-section-padY" style={{ padding: '80px 48px', maxWidth: 1280, margin: '0 auto' }}>
-      <div style={{ textAlign: 'center', marginBottom: 48 }}>
+      <Reveal style={{ textAlign: 'center', marginBottom: 48 }}>
         <div className="rs-smallcaps" style={{ fontSize: 13, fontWeight: 600, color: TITIS.lilac, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>{pick(S.kicker, lang)}</div>
         <h2 className="rs-h2" style={{ fontSize: 48, fontWeight: 700, lineHeight: 1.05, letterSpacing: -1.5, color: TITIS.ink, margin: 0, maxWidth: 760, marginInline: 'auto' }}>
           {pick(S.title, lang)}
         </h2>
-      </div>
+      </Reveal>
 
       <div className="rs-grid-3-smart" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr', gap: 18 }}>
         {/* Live Activity card */}
-        <div style={{
+        <Reveal delay={0} style={{
           background: TITIS.ink, borderRadius: 24, padding: 32,
           color: TITIS.cream, display: 'flex', flexDirection: 'column', gap: 20,
           minHeight: 380,
@@ -41,10 +41,10 @@ function SmartFeatures() {
               <div style={{ fontSize: 11, padding: '5px 10px', borderRadius: 99, background: TITIS.coral, color: '#fff', fontWeight: 600 }}>{pick(S.la.stop, lang)}</div>
             </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* Widget card */}
-        <div style={{
+        <Reveal delay={120} style={{
           background: `linear-gradient(180deg, ${TITIS.blue} 0%, ${TITIS.lilac} 100%)`,
           borderRadius: 24, padding: 28, color: '#fff', minHeight: 380,
           display: 'flex', flexDirection: 'column', gap: 14,
@@ -81,10 +81,10 @@ function SmartFeatures() {
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* Notifications card */}
-        <div style={{
+        <Reveal delay={240} style={{
           background: TITIS.cream, borderRadius: 24, padding: 28,
           border: `1px solid ${TITIS.line}`, minHeight: 380,
           display: 'flex', flexDirection: 'column', gap: 14,
@@ -111,7 +111,7 @@ function SmartFeatures() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -126,7 +126,7 @@ function WhiteNoise() {
   const sounds = N.sounds.map((s, i) => ({ name: pick(s, lang), c: tints[i], ic: ics[i] }));
   return (
     <section className="rs-section" style={{ padding: '40px 48px', maxWidth: 1280, margin: '0 auto' }}>
-      <div className="rs-grid-2 rs-card-pad" style={{
+      <Reveal className="rs-grid-2 rs-card-pad" style={{
         background: TITIS.ink, borderRadius: 36, padding: '64px 56px',
         color: TITIS.cream,
         display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'center',
@@ -143,7 +143,7 @@ function WhiteNoise() {
 
         <div className="rs-sounds-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
           {sounds.map((s, i) => (
-            <div key={i} style={{
+            <Reveal key={i} delay={i * 70} y={18} style={{
               background: 'rgba(255,255,255,0.06)',
               border: `1px solid rgba(255,246,234,0.1)`,
               borderRadius: 16, padding: 16,
@@ -156,10 +156,10 @@ function WhiteNoise() {
                 fontSize: 20, color: TITIS.ink,
               }}>{s.ic}</div>
               <div style={{ fontSize: 13.5, fontWeight: 600, marginTop: 'auto' }}>{s.name}</div>
-            </div>
+            </Reveal>
           ))}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -171,15 +171,15 @@ function FAQ() {
   const [open, setOpen] = React.useState(0);
   return (
     <section id="faq" className="rs-section rs-section-padY" style={{ padding: '80px 48px', maxWidth: 1000, margin: '0 auto' }}>
-      <div style={{ textAlign: 'center', marginBottom: 48 }}>
+      <Reveal style={{ textAlign: 'center', marginBottom: 48 }}>
         <div className="rs-smallcaps" style={{ fontSize: 13, fontWeight: 600, color: TITIS.coral, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>{pick(F.kicker, lang)}</div>
         <h2 className="rs-h2-sm" style={{ fontSize: 44, fontWeight: 700, lineHeight: 1.05, letterSpacing: -1.4, color: TITIS.ink, margin: 0 }}>{pick(F.title, lang)}</h2>
-      </div>
+      </Reveal>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {F.items.map(([q, a], i) => {
           const isOpen = open === i;
           return (
-            <div key={i} style={{
+            <Reveal key={i} delay={i * 60} y={18} style={{
               background: '#fff', borderRadius: 18,
               border: `1px solid ${TITIS.line}`, overflow: 'hidden',
             }}>
@@ -201,7 +201,7 @@ function FAQ() {
               {isOpen && (
                 <div style={{ padding: '0 24px 22px', fontSize: 15, color: TITIS.inkSoft, lineHeight: 1.6 }}>{pick(a, lang)}</div>
               )}
-            </div>
+            </Reveal>
           );
         })}
       </div>
@@ -215,13 +215,13 @@ function FinalCTA() {
   const C = TITIS_DICT.cta;
   return (
     <section className="rs-section" style={{ padding: '40px 48px 0', maxWidth: 1280, margin: '0 auto' }}>
-      <div className="rs-cta-pad" style={{
+      <Reveal className="rs-cta-pad" y={40} duration={900} style={{
         background: `linear-gradient(135deg, ${TITIS.coral} 0%, ${TITIS.yellow} 33%, ${TITIS.green} 66%, ${TITIS.blue} 100%)`,
         borderRadius: 36, padding: '80px 48px',
         textAlign: 'center', color: '#fff',
         position: 'relative', overflow: 'hidden',
       }}>
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.08, backgroundImage: 'radial-gradient(circle at 20% 30%, #fff 0 2px, transparent 3px), radial-gradient(circle at 70% 60%, #fff 0 1.5px, transparent 2px)', backgroundSize: '60px 60px, 80px 80px' }}/>
+        <Parallax speed={0.25} style={{ position: 'absolute', inset: '-15% 0', opacity: 0.12, backgroundImage: 'radial-gradient(circle at 20% 30%, #fff 0 2px, transparent 3px), radial-gradient(circle at 70% 60%, #fff 0 1.5px, transparent 2px)', backgroundSize: '60px 60px, 80px 80px' }}/>
         <div style={{ position: 'relative' }}>
           <h2 className="rs-h2-lg" style={{ fontSize: 60, fontWeight: 700, lineHeight: 1.02, letterSpacing: -2, margin: '0 0 16px', maxWidth: 800, marginInline: 'auto' }}>
             {pick(C.title, lang)}
@@ -234,7 +234,7 @@ function FinalCTA() {
             <a href="#" style={{ padding: '14px 28px', borderRadius: 99, background: '#fff', color: TITIS.ink, textDecoration: 'none', fontWeight: 700, fontSize: 15.5 }}>{pick(C.androidBtn, lang)}</a>
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

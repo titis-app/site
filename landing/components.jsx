@@ -107,4 +107,73 @@ function IOSGlyph({ size = 18, color = 'currentColor' }) {
   );
 }
 
-Object.assign(window, { TITIS, RAINBOW, Wordmark, AppIcon, DownloadButton, IOSGlyph });
+// ─── Scroll animations ──────────────────────────────────────────────
+// Centralised so the whole landing gets a coherent motion feel.
+// Both helpers no-op under `prefers-reduced-motion: reduce`.
+
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Parallax wrapper — translates the element on Y proportional to its
+// distance from the viewport centre. speed ~0.1 is subtle, ~0.4 is strong.
+function Parallax({ speed = 0.2, style = {}, children, as: Tag = 'div', ...rest }) {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const centerOffset = (rect.top + rect.height / 2) - vh / 2;
+      el.style.transform = `translate3d(0, ${(-centerOffset * speed).toFixed(2)}px, 0)`;
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [speed]);
+  return (
+    <Tag ref={ref} style={{ willChange: 'transform', ...style }} {...rest}>
+      {children}
+    </Tag>
+  );
+}
+
+// Reveal — fades + lifts an element into place the first time it
+// enters the viewport. `delay` in ms lets us stagger sibling cards.
+function Reveal({ children, delay = 0, y = 28, duration = 800, as: Tag = 'div', style = {}, ...rest }) {
+  const ref = React.useRef(null);
+  const [visible, setVisible] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (prefersReducedMotion()) { setVisible(true); return; }
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setVisible(true); io.disconnect(); }
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <Tag ref={ref} style={{
+      transform: visible ? 'translate3d(0,0,0)' : `translate3d(0, ${y}px, 0)`,
+      opacity: visible ? 1 : 0,
+      transition: `transform ${duration}ms cubic-bezier(.2,.7,.2,1) ${delay}ms, opacity ${duration}ms ease ${delay}ms`,
+      willChange: 'transform, opacity',
+      ...style,
+    }} {...rest}>
+      {children}
+    </Tag>
+  );
+}
+
+Object.assign(window, { TITIS, RAINBOW, Wordmark, AppIcon, DownloadButton, IOSGlyph, Parallax, Reveal });

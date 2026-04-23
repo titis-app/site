@@ -28,11 +28,11 @@ function Hero() {
     <section className="rs-section rs-hero-section" style={{ padding: '80px 48px 40px', maxWidth: 1280, margin: '0 auto' }}>
       <div className="rs-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 48, alignItems: 'center' }}>
         <div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 99, background: '#fff', border: `1px solid ${TITIS.line}`, fontSize: 12.5, fontWeight: 600, color: TITIS.inkSoft, marginBottom: 22 }}>
+          <Reveal delay={0} y={16} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 99, background: '#fff', border: `1px solid ${TITIS.line}`, fontSize: 12.5, fontWeight: 600, color: TITIS.inkSoft, marginBottom: 22 }}>
             <span style={{ display: 'inline-block', width: 7, height: 7, borderRadius: 99, background: TITIS.green }}/>
             {pick(H.badge, lang)}
-          </div>
-          <h1 className="rs-h1" style={{
+          </Reveal>
+          <Reveal delay={80} as="h1" className="rs-h1" style={{
             fontSize: 76, fontWeight: 700, lineHeight: 1.02, letterSpacing: -2.5,
             color: TITIS.ink, margin: 0,
           }}>
@@ -40,19 +40,19 @@ function Hero() {
             {pick(H.h1b, lang)}<br/>
             {pick(H.h1c, lang)}<br/>
             <span style={{ color: TITIS.coral }}>{pick(H.h1d, lang)}</span>
-          </h1>
-          <p className="rs-lede" style={{
+          </Reveal>
+          <Reveal delay={220} as="p" className="rs-lede" style={{
             fontSize: 19, color: TITIS.inkSoft, lineHeight: 1.55,
             marginTop: 28, marginBottom: 36, maxWidth: 520,
             textWrap: 'pretty', overflowWrap: 'break-word', hyphens: 'auto',
           }}>
             <Wordmark size={19} rainbow/>{pick(H.ledeSuffix, lang)}
-          </p>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          </Reveal>
+          <Reveal delay={320} style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             <DownloadButton platform="ios"/>
             <DownloadButton platform="android"/>
-          </div>
-          <div style={{ marginTop: 30, display: 'flex', alignItems: 'center', gap: 14 }}>
+          </Reveal>
+          <Reveal delay={420} style={{ marginTop: 30, display: 'flex', alignItems: 'center', gap: 14 }}>
             <div style={{ display: 'flex' }}>
               {[TITIS.coral, TITIS.yellow, TITIS.green, TITIS.blue].map((c, i) => (
                 <div key={i} style={{ width: 34, height: 34, borderRadius: 99, background: c, border: `2.5px solid ${TITIS.cream}`, marginLeft: i === 0 ? 0 : -10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 13, fontWeight: 700 }}>{'MJAL'[i]}</div>
@@ -62,14 +62,14 @@ function Hero() {
               <div style={{ fontWeight: 600, color: TITIS.ink }}>★★★★★</div>
               <div>{pick(H.ratingBlurbSuffix, lang)}<Wordmark size={13.5} color={TITIS.coral}/></div>
             </div>
-          </div>
+          </Reveal>
         </div>
 
         {/* Right — stack of 2 phones */}
         <div className="rs-hero-phones rs-hero-ph" style={{ position: 'relative', height: 640, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          {/* Soft background blobs */}
-          <div style={{ position: 'absolute', top: 40, left: 30, width: 200, height: 200, borderRadius: 99, background: `${TITIS.yellow}55`, filter: 'blur(50px)' }}/>
-          <div style={{ position: 'absolute', bottom: 40, right: 30, width: 240, height: 240, borderRadius: 99, background: `${TITIS.lilac}44`, filter: 'blur(60px)' }}/>
+          {/* Soft background blobs — parallax at different speeds for depth */}
+          <Parallax speed={0.35} style={{ position: 'absolute', top: 40, left: 30, width: 200, height: 200, borderRadius: 99, background: `${TITIS.yellow}55`, filter: 'blur(50px)' }}/>
+          <Parallax speed={0.18} style={{ position: 'absolute', bottom: 40, right: 30, width: 240, height: 240, borderRadius: 99, background: `${TITIS.lilac}44`, filter: 'blur(60px)' }}/>
 
           <div className="rs-hero-phone-a" style={{ position: 'absolute', left: 10, top: 30, zIndex: 1 }}>
             <Phone width={250} tilt={-6} bareScreen><ScreenImage src="assets/hero-login.png" alt={pick(H.alts.login, lang)}/></Phone>
@@ -103,21 +103,25 @@ function RecordTypes() {
   return (
     <section id="registros" className="rs-section rs-section-padY" style={{ padding: '80px 48px', maxWidth: 1280, margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 40, flexWrap: 'wrap', gap: 20 }}>
-        <div>
+        <Reveal>
           <div className="rs-smallcaps" style={{ fontSize: 13, fontWeight: 600, color: TITIS.coral, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>{pick(R.kicker, lang)}</div>
           <h2 className="rs-h2" style={{ fontSize: 48, fontWeight: 700, lineHeight: 1.05, letterSpacing: -1.5, color: TITIS.ink, margin: 0, maxWidth: 640 }}>
             {pick(R.title, lang)}
           </h2>
-        </div>
-        <p style={{ fontSize: 15.5, color: TITIS.inkSoft, lineHeight: 1.55, maxWidth: 340, margin: 0 }}>
+        </Reveal>
+        <Reveal delay={120} as="p" style={{ fontSize: 15.5, color: TITIS.inkSoft, lineHeight: 1.55, maxWidth: 340, margin: 0 }}>
           {pick(R.sub, lang)}
-        </p>
+        </Reveal>
       </div>
       <div className="rs-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18 }}>
-        {items.slice(0, 3).map((it, i) => <FeatureCard key={i} {...it}/>)}
+        {items.slice(0, 3).map((it, i) => (
+          <Reveal key={i} delay={i * 90}><FeatureCard {...it}/></Reveal>
+        ))}
       </div>
       <div className="rs-grid-2-even" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 18, marginTop: 18 }}>
-        {items.slice(3).map((it, i) => <FeatureCard key={i} {...it}/>)}
+        {items.slice(3).map((it, i) => (
+          <Reveal key={i} delay={i * 90}><FeatureCard {...it}/></Reveal>
+        ))}
       </div>
     </section>
   );
@@ -129,7 +133,7 @@ function FamilySection() {
   const F = TITIS_DICT.family;
   return (
     <section id="familia" className="rs-section" style={{ padding: '40px 48px', maxWidth: 1280, margin: '0 auto' }}>
-      <div className="rs-grid-2 rs-card-pad" style={{
+      <Reveal className="rs-grid-2 rs-card-pad" style={{
         background: `linear-gradient(160deg, #fff 0%, ${TITIS.creamDeep} 100%)`,
         borderRadius: 36, padding: '64px 56px',
         border: `1px solid ${TITIS.line}`,
@@ -157,7 +161,7 @@ function FamilySection() {
 
         {/* Family diagram */}
         <FamilyDiagram/>
-      </div>
+      </Reveal>
     </section>
   );
 }
